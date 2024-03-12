@@ -1,37 +1,40 @@
+import prisma from "@/lib/prisma"
 import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
+import GoogleProvider from 'next-auth/providers/google'
 
 const handler = NextAuth({
   providers: [
-    Credentials({
-        name: 'Credentials',
-        credentials: {
-            username: { label: "Username", type: "Text", placeholder: "jane" },
-            password: { label: "Password", type: "Password" }
-        },
-        async authorize(credentials, req) {
-            // You need to provide your own logic here that takes the credentials
-            // submitted and returns either a object representing a user or value
-            // that is false/null if the credentials are invalid.
-            // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-            // You can also use the `req` object to obtain additional parameters
-            // (i.e., the request IP address)
-            const res = await fetch("/your/endpoint", {
-              method: 'POST',
-              body: JSON.stringify(credentials),
-              headers: { "Content-Type": "application/json" }
-            })
-            const user = await res.json()
-      
-            // If no error and we have user data, return it
-            if (res.ok && user) {
-              return user
-            }
-            // Return null if user data could not be retrieved
-            return null
-          }
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ''
     })
-]
+  ],
+  callbacks: {
+    async signIn({ account, profile }){
+      if(!profile?.email){
+        throw new Error('No profile')
+      }
+      else{
+        const user = await prisma.user.upsert({
+          where: {
+            email: profile.email
+          },
+          create: {
+            email: profile.email,
+            name: profile.name,
+            avatar: profile.image,
+            tenant: {
+              create: {}
+            }
+          },
+          update: {
+            name: profile.name
+          }
+        })
+        return true
+      }
+    }
+  }
 })
 
 export { handler as GET, handler as POST }
