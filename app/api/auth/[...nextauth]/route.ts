@@ -10,7 +10,7 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async signIn({ account, profile }){
+    async signIn({ profile }){
       if(!profile?.email){
         throw new Error('No profile')
       }
@@ -28,7 +28,8 @@ const handler = NextAuth({
             }
           },
           update: {
-            name: profile.name
+            name: profile.name,
+            avatar: profile.image
           }
         })
         return true
