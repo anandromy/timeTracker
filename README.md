@@ -9,5 +9,5 @@
 ## Authentication
 We'll do authentication on a different branch than the main
 
-- `git create auth`
+- `git branch auth`
 - `git checkout auth`
