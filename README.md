@@ -11,3 +11,7 @@ We'll do authentication on a different branch than the main
 
 - `git branch auth`
 - `git checkout auth`
+
+We're going to use next Auth for authorization
+1. `npm install next-auth`
+2. 
