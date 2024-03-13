@@ -1,14 +1,19 @@
 import { getServerSession } from 'next-auth/next'
-export type AuthUser = {
-    name: string,
-    email: string,
-    image: string
+
+export const session = async ({ session, token }: any) => {
+    session.user.id = token.id
+    session.user.tenant = token.tenant
+    return session
 }
 
-export const getUserSession = async(): Promise<AuthUser> => {
-    const session = await getServerSession()
-    if(!session){
+export const getUserSession = async() => {
+    const authSession = await getServerSession({
+        callbacks: {
+            session
+        }
+    })
+    if(!authSession){
         throw new Error('unauthorized')
     }
-    return session.user as AuthUser
+    return authSession.user
 }
