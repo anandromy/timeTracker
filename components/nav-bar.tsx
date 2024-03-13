@@ -10,7 +10,8 @@ const links = [
 export default async function Navbar(){
     const user = await getUserSession()
     return(
-        <div className="flex gap-10 items-center border shadow-md container mx-auto justify-between py-2">
+        <div className="shadow-md">
+            <div className="flex gap-10 items-center container mx-auto justify-between py-2">
                 <span className="font-semibold">Time tracker</span>
             <nav>
                 {
@@ -24,6 +25,7 @@ export default async function Navbar(){
             <div className="flex flex-1 justify-end">
                 <img src={`${user.image}`} alt="avatar-image" width={40} className="rounded-full"/>
             </div>
+        </div>
         </div>
     )
 }
