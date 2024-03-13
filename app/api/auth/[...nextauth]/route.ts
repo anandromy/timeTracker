@@ -34,8 +34,25 @@ const handler = NextAuth({
         })
         return true
       }
-    }
-  }
+    },
+    async jwt({ token , account, profile }) {
+      if(account){
+        const user = await prisma.user.findUnique({
+          where: {
+            email: profile?.email
+          }
+        })
+        if(!user){
+          throw new Error("No user found")
+        }
+        token.id = user.id
+        token.tenant = {
+          id: user.tenantId
+        }
+      }
+      return token
+    },
+  },
 })
 
 export { handler as GET, handler as POST }
