@@ -8,7 +8,7 @@ const links = [
 ]
 
 export default async function Navbar(){
-    const user = getUserSession()
+    const user = await getUserSession()
     return(
         <div className="flex gap-10 items-center border shadow-md container mx-auto justify-between py-2">
                 <span className="font-semibold">Time tracker</span>
