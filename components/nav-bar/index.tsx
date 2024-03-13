@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { getServerSession } from 'next-auth/next'
+import { getUserSession } from "@/lib/auth"
 const links = [
     {
         href: "/track",
@@ -8,7 +8,7 @@ const links = [
 ]
 
 export default async function Navbar(){
-    const session = await getServerSession()
+    const user = getUserSession()
     return(
         <div className="flex gap-10 items-center border shadow-md container mx-auto justify-between py-2">
                 <span className="font-semibold">Time tracker</span>
@@ -22,7 +22,7 @@ export default async function Navbar(){
                 }
             </nav>
             <div className="">
-                <img src={`${session?.user?.image}`} alt="avatar-image" width={40} className="rounded-full"/>
+                <img src={`${(await user).image}`} alt="avatar-image" width={40} className="rounded-full"/>
             </div>
         </div>
     )
