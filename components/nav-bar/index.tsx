@@ -21,7 +21,7 @@ export default async function Navbar(){
                     ))
                 }
             </nav>
-            <div className="">
+            <div className="flex flex-1 justify-end">
                 <img src={`${user.image}`} alt="avatar-image" width={40} className="rounded-full"/>
             </div>
         </div>
