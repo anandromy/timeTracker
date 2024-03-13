@@ -22,7 +22,7 @@ export default async function Navbar(){
                 }
             </nav>
             <div className="">
-                <img src={`${(await user).image}`} alt="avatar-image" width={40} className="rounded-full"/>
+                <img src={`${user.image}`} alt="avatar-image" width={40} className="rounded-full"/>
             </div>
         </div>
     )
