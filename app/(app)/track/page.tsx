@@ -11,6 +11,10 @@ type NewActivityProps = {
    activity?: Activity | null
 }
 
+type DailyActivitiesProps = {
+   activities: Activity[]
+}
+
 const NewActivity = ({ activity }: NewActivityProps ) => {
    async function upsertActivity(data: FormData){
       'use server'
@@ -64,6 +68,21 @@ const NewActivity = ({ activity }: NewActivityProps ) => {
    )
 }
 
+const DailyActivities = ({ activities }: DailyActivitiesProps) => {
+   return(
+      <div>
+         <h2 className="font-semibold text-xl my-3">What have you done today</h2>
+         <ul>
+            {
+               activities.map((activity) => (
+                  <li key={activity.id}>{activity.name}</li>
+               ))
+            }
+         </ul>
+      </div>
+   )
+}
+
 export default async function TrackPage() {
 
    const user = await getUserSession()
@@ -74,9 +93,41 @@ export default async function TrackPage() {
          endAt: null
       }
    })
+
+   const now = new Date()
+   const startOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+   )
+   const endOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      23,
+      59,
+      59
+   )
+
+   const dailyActivities = await prisma.activity.findMany({
+      where: {
+         tenantId: user.tenant.id,
+         userId: user.id,
+         startAt: {
+            gte: startOfToday
+         },
+         endAt: {
+            lte: endOfToday
+         }
+      },
+      orderBy: {
+         startAt: 'asc'
+      }
+   })
     return (
      <main className="min-h-screen mx-auto container py-4">
          <NewActivity activity={currentActivity} />
+         <DailyActivities activities={dailyActivities} />
      </main>
     );
   }
