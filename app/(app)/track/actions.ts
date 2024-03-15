@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import { Activity } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 
 export async function updateActivity(data: FormData){
@@ -16,5 +17,14 @@ export async function updateActivity(data: FormData){
         }
     })
 
+    revalidatePath('/track')
+}
+
+export async function deleteActivity(id: string){
+    await prisma.activity.delete({
+        where:{
+            id: id
+        }
+    })
     revalidatePath('/track')
 }
