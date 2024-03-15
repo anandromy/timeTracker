@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { Activity } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { ActivityDuration } from "./duration";
-import { Play, Square } from "lucide-react";
+import { ArrowBigRight, ArrowRight, Play, Square } from "lucide-react";
 
 type NewActivityProps = {
    activity?: Activity | null
@@ -75,7 +75,18 @@ const DailyActivities = ({ activities }: DailyActivitiesProps) => {
          <ul>
             {
                activities.map((activity) => (
-                  <li key={activity.id}>{activity.name}</li>
+                  <li key={activity.id} className="py-2 space-x-4 flex items-center">
+                     <span className="font-semibold">
+                        {activity.name}
+                     </span>
+                     <span>
+                        {activity.startAt.toLocaleTimeString()}
+                     </span>
+                     <ArrowRight size={16}/>
+                     <span>
+                     {activity.endAt?.toLocaleTimeString()}
+                     </span>
+                  </li>
                ))
             }
          </ul>
