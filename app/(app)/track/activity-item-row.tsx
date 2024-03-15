@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Activity } from "@prisma/client"
 import { ArrowRight, CalendarIcon } from "lucide-react"
 import { useState } from "react"
-import { updateActivity } from "./actions"
+import { deleteActivity, updateActivity } from "./actions"
 import { Button } from "@/components/ui/button"
 import { pad } from "@/lib/formatTime"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -78,6 +78,7 @@ const EditItemRow = ({ activity, onSave }: EditItemRowProps) => {
             await updateActivity(data)
             onSave()
         }} className="flex items-center space-x-2">
+            <input type="hidden" name="id" defaultValue={activity.id} />
             <Input type="text" name="name" defaultValue={activity.name || ''} className="w-[300px]"/>
             <EditDateTime name="startAt" value={activity.startAt} />
             <EditDateTime name="endAt" value={activity.endAt || new Date()} />
@@ -118,7 +119,7 @@ export const ActivityItemRow = ({ activity }: Props) => {
         <div className="flex justify-between">
             <ReadItemRow activity={activity} />
             <button onClick={() => setIsEditing(true)}>Edit</button>
-        </div>
-        
+            <button onClick={async() => await deleteActivity(activity.id)}>Delete</button>
+        </div>  
     )
 }
