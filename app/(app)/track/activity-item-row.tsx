@@ -78,7 +78,7 @@ const EditItemRow = ({ activity, onSave }: EditItemRowProps) => {
             await updateActivity(data)
             onSave()
         }} className="flex items-center space-x-2">
-            <input type="hidden" name="id" value={activity.id} />
+            <input type="hidden" name="id" defaultValue={activity.id} />
             <Input type="text" name="name" defaultValue={activity.name || ''} className="w-[300px]"/>
             <EditDateTime name="startAt" value={activity.startAt} />
             <EditDateTime name="endAt" value={activity.endAt || new Date()} />
