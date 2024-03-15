@@ -28,3 +28,10 @@ We're going to use next Auth for authorization
 We want to insert the user id in user's jwt, when after we've created user in the serverside/database using the sigin callback
 1. Need to updae session token to have user's and tenat's info in it
 2. Use that to create activities
+
+# Day-2
+## Goals:
+1. Displaying the duration of currently ongoing activity
+2. Display a history of activities done with their corresponding start and stop time
+3. Enable editing the time of already done activities
+
