@@ -76,7 +76,7 @@ const DailyActivities = ({ activities }: DailyActivitiesProps) => {
          <ul>
             {
                activities.map((activity) => (
-                  <ActivityItemRow activity={activity}/>
+                  <ActivityItemRow activity={activity} key={activity.id}/>
                ))
             }
          </ul>
